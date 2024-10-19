@@ -1,34 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
 import './App.css'
+import Nav from './components/Nav'
+import SignUp from './components/SignUp'
+import homeicon from './assets/homeicon.svg'
+import ProcessButton from './components/ProcessButton';
+import JobPosting from './components/JobPosting';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  console.log(window.innerWidth);
+  console.log(window.innerHeight)
+  
+  const [login, setLogin] = useState<boolean>(false)
+  const [createnew, setCreateNew] = useState<boolean> (true)
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className=' w-screen h-screen font-dsans flex flex-col'>
+      <Nav show={login}/>
+      {!login &&
+        <div className=' w-full flex-1 flex md:flex-row flex-col gap-2'>
+          <div className=' md:w-1/2 w-full h-1/2 md:h-full flex justify-center items-center'>
+            <p className=' w-[30rem] font-medium text-[#292929] opacity-70 text-base'>
+              Lorem Ipsum is simply dummy text of the printing and  typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+            </p>
+          </div>
+        <SignUp/>
+      </div>}
+      {login && <div className='w-full flex-1 flex md:flex-row flex-col'>
+        <div className=' md:h-full md:w-20 w-full border-r-2 border-[#C5C5C5] flex flex-col items-center p-4'>
+          <div className=' h-8 relative md:top-10'>
+            <button>
+              <img
+              src={homeicon}
+              className=' w-6 h-6'
+              alt="homeicon" />
+            </button>
+          </div>
+        </div>
+        <div className='flex-1 flex'>
+          <div className=' w-full flex flex-col'>
+            {createnew && 
+            <div className=' w-[13%] font-semibold text-xl relative top-9 left-8'>
+              <ProcessButton text={"Create Interview"} fn={setCreateNew}/>
+            </div>}
+            {!createnew && <JobPosting/>}
+          </div>
+        </div>
+      </div>}
+    </div>
   )
 }
 
