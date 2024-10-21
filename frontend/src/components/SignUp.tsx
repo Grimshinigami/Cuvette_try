@@ -3,7 +3,8 @@ import InitialSignUp from "./InitialSignUp"
 import VerificationSignup from "./VerificationSignup"
 
 
-function SignUp() {
+function SignUp({fn, userSet}:
+    {fn:React.Dispatch<React.SetStateAction<boolean>>,userSet:React.Dispatch<React.SetStateAction<string>>}) {
 
     const [initial, setInitial] = useState<boolean>(true)
 
@@ -17,7 +18,7 @@ function SignUp() {
                         <p className=" text-xs font-medium">Lorem Ipsum is simply dummy text</p>
                     </div>
                     {initial && <InitialSignUp setfn={setInitial}/>}
-                    {!initial && <VerificationSignup/>}
+                    {!initial && <VerificationSignup fn={fn} userSet={userSet}/>}
                 </div>
             </div>
             

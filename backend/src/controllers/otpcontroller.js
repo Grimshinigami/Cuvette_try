@@ -62,6 +62,8 @@ const sendOtp = asyncHandler(async (req,res) =>{
 const verifyOtp = asyncHandler( async (req,res) =>{
     const {email, otp} = req.body
 
+    console.log(email,otp)
+
     if(!(email && otp)){
         throw new ApiError(400,"All fields are required")
     }
@@ -76,10 +78,10 @@ const verifyOtp = asyncHandler( async (req,res) =>{
 
     const {expiresAt: isValid} = foundOTP
 
-    if(isValid < Date.now()){
-        await OTP.deleteOne({email})
-        throw new ApiError(400, "Expired Token")
-    }
+    // if(isValid < Date.now()){
+    //     await OTP.deleteOne({email})
+    //     throw new ApiError(400, "Expired Token")
+    // }
 
     const {otp: otpvalue} = foundOTP
 
@@ -90,7 +92,7 @@ const verifyOtp = asyncHandler( async (req,res) =>{
     // console.log("Otp is: ",isCorrect);
 
     if(!isCorrect){
-        throw new ApiError(404,"Wrong OTP")
+        throw new ApiError(400  ,"Wrong OTP")
     }
 
     return res

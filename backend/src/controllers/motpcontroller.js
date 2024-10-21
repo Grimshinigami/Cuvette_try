@@ -71,10 +71,10 @@ const verifymOtp = asyncHandler( async (req,res) =>{
 
     const {expiresAt: isValid} = foundOTP
 
-    if(isValid < Date.now()){
-        await mOTP.deleteOne({email})
-        throw new ApiError(400, "Expired Token")
-    }
+    // if(isValid < Date.now()){
+    //     await mOTP.deleteOne({email})
+    //     throw new ApiError(400, "Expired Token")
+    // }
 
     const {otp: otpvalue} = foundOTP
 

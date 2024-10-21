@@ -2,7 +2,7 @@ import cuvettelogo from '../assets/cuvettelogo.svg'
 import yournamecircle from '../assets/yournamecircle.svg'
 import yournamepointer from '../assets/yournamepointer.svg'
 
-function Nav({show=false}:{show?:boolean}) {
+function Nav({show=false,user=""}:{show?:boolean,user?:string}) {
   return (
     <header className={` w-full flex flex-wrap pt-8 pb-6 h-24 text-xl gap-4 ${show==true?'border-b-2 border-[#C5C5C5]':''}`}>
         <div className=' h-full flex pl-8 p-1'>
@@ -19,7 +19,7 @@ function Nav({show=false}:{show?:boolean}) {
             src={yournamecircle}
             className=' w-4 h-4'
             alt="circleicon" />
-            <p>Your name</p>
+            <p>{user}</p>
             <button>
               <img
               src={yournamepointer}

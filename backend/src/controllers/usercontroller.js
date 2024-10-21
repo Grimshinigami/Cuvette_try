@@ -18,7 +18,6 @@ const addUser = asyncHandler(async(req,res)=>{
         secure: true
     }
 
-
     if(newUser){
         return res
                 .status(200)
@@ -50,9 +49,11 @@ const addUser = asyncHandler(async(req,res)=>{
         throw new ApiError(500, "Error in creating user")
     }
 
+    console.log(actualUser?.accessToken);
+
     return res
             .status(200)
-            .cookie("accessToken",actualUser?.acessToken,options)
+            .cookie("accessToken",actualUser?.accessToken,options)
             .json(new ApiResponse(200,actualUser,"New User created"))
 
 })

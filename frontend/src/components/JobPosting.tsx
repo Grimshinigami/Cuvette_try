@@ -5,21 +5,27 @@ import crossicon from '../assets/crossicon.svg'
 import calendaricon from '../assets/calendaricon.svg'
 import Calendar from "react-calendar";
 import ProcessButton from "./ProcessButton";
+import axios from "axios";
 
-function JobPosting() {
+function JobPosting({fn}:
+    {fn:React.Dispatch<React.SetStateAction<boolean>>}) {
 
     // const temp:React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>>
     const [candidate, setCandidates] = useState<Map<string,string>>(new Map())
-    const [curr, setCurr] = useState<string>('' )
+    const [curr, setCurr] = useState<string>('')
     const [endDate, setEndDate] = useState<string>('Select a Date')
     const [showCal, setShowCal] = useState<boolean> (false);
     const [candFocus, setCanFocus] = useState<boolean> (false)
     const [descFocus, setDescFocus] = useState<boolean> (false)
     const [calFocus, setCalFocus] = useState<boolean> (false)
-    
+    const [jobTitle, setJobTitle] = useState<string> ('')
+    const [jobDesc, setJobDesc] = useState<string> ('')
+    const [exp, setExp] = useState<string> ('')
+
     function handlekeydown(e:React.KeyboardEvent<HTMLInputElement>){
         if(e.key == "Enter"){
             setCandidates(cand => cand.set(uuid(),curr))
+            // console.log(candidate);
             setCurr('')
         }
     }
@@ -42,6 +48,33 @@ function JobPosting() {
         setCalFocus(true)
     }    
 
+    function handleSubmit(){
+        if(!(jobTitle && jobDesc && exp && candidate && endDate)){
+            console.log("All fields are required");
+        } else {
+            axios.post('http://localhost:8000/api/v1/jobs/addjob',{
+                jobTitle,
+                jobDescription:jobDesc,
+                experienceLevel:exp,
+                candidates:[...candidate.values()],
+                endDate
+            },{withCredentials:true})
+            .then((response)=>{
+                console.log(response.data);
+                fn(true)
+            })
+            .catch((reason)=>{
+                console.log(reason.message);
+            })
+            
+        }
+    }
+
+    useEffect(() => {
+      console.log(candidate);
+    }, [candidate])
+    
+
 
   return (
     <div className=" md:w-1/2 w-full md:h-full relative left-18 flex justify-center items-start pt-20">
@@ -51,7 +84,9 @@ function JobPosting() {
                     Job Title
                 </p>
                 <input 
-                type="text" 
+                type="text"
+                value={jobTitle}
+                onChange={(e)=> setJobTitle(e.target.value)}
                 className=" w-2/3 border-2 border-[#D0D0D0] opacity-70 rounded-md p-2 outline-none font-normal text-[#535353] opacity-70 focus:border-[#0B66EF]"
                 placeholder="Enter Job Title"/>
             </div>
@@ -61,6 +96,8 @@ function JobPosting() {
                     <textarea
                     onFocus={()=>setDescFocus(true)}
                     onBlur={()=>setDescFocus(false)}
+                    value={jobDesc}
+                    onChange={(e)=> setJobDesc(e.target.value)}
                     className=" w-full h-full outline-none font-normal resize-none text-[#535353] opacity-70 "
                     placeholder="Enter Job Description"
                     />
@@ -70,11 +107,9 @@ function JobPosting() {
                 <p className="flex-1 flex text-lg text-right justify-end items-end ">
                     Experience Level
                 </p>
-                {/* <input 
-                type="text" 
-                className=" w-2/3 border-2 border-[#D0D0D0] opacity-70 rounded-md p-2 outline-none font-normal"
-                placeholder="Enter Job Title"/> */}
-                <select className="w-2/3 border-2 border-[#D0D0D0] opacity-70 rounded-md p-2 outline-none font-normal text-[#535353] opacity-70 focus:border-[#0B66EF]">
+                <select 
+                onChange={(e)=> setExp(e.target.value)}
+                className="w-2/3 border-2 border-[#D0D0D0] opacity-70 rounded-md p-2 outline-none font-normal text-[#535353] opacity-70 focus:border-[#0B66EF]">
                     <option value="Select Experience">Select Experience</option>
                     <option value="0-1">0-1</option>
                     <option value="1-5">1-5</option>
@@ -145,7 +180,7 @@ function JobPosting() {
             
             <div className=" w-full flex justify-end">
                 <div className=" w-32">
-                    <ProcessButton text={"Send"}/>
+                    <ProcessButton text={"Send"} fn={handleSubmit}/>
                 </div>
             </div>
         </div>

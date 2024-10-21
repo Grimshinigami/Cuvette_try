@@ -1,11 +1,11 @@
 import React from "react"
 
 function ProcessButton({text, fn}:
-    {text:string, fn?:React.Dispatch<React.SetStateAction<boolean>>}) {
+    {text:string, fn?:any}) {
 
     function clickHandler(){        
         if(fn!=undefined){
-            fn(false)
+            fn()
         }
     } 
 
