@@ -18,12 +18,13 @@ import OTProuter from './routes/otprouter.js'
 import mOTProuter from './routes/motprouter.js'
 import userRouter from './routes/userrouter.js'
 import jobRouter from './routes/jobrouter.js'
+import healthCheckRouter from './routes/healthCheckrouter.js'
 
 app.use('/api/v1/otp', OTProuter)
 app.use('/api/v1/motp',mOTProuter)
 app.use('/api/v1/users',userRouter)
 app.use('/api/v1/jobs',jobRouter)
-
+app.use('/api/v1/healthcheck',healthCheckRouter)
 
 export {app}
 
