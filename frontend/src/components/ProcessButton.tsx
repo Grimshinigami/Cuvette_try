@@ -1,4 +1,3 @@
-import React from "react"
 
 function ProcessButton({text, fn}:
     {text:string, fn?:any}) {
